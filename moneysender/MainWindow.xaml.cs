@@ -37,7 +37,7 @@ namespace moneysender
             _controlClient = new(OnReceiveClient);
             receivSmsServer += _controlServer.ReceiveServer;
             receivSmsClient += _controlClient.ReceiveClient;
-            _controlUI.AddRangeUISFirstWindow(new UIElement[] { CreateGame, JoinGame });
+            _controlUI.AddRangeUIFirstWindow(new UIElement[] { CreateGame, JoinGame });
             _controlUI.AddRangeUISecondWindow(new UIElement[] { LocalGame, WanGame });
             _controlUI.AddRangeUIThirdWindow(new UIElement[] { JoinGameLast, textBlockIPFriend, ClientIP, ClientPort });
             _controlUI.AddRangeUILastWindow(new UIElement[] { IPForConnect, ConnectIP, Balance, YourBalance, Rubles, CountSend, howMuchMoneySend });

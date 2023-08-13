@@ -13,7 +13,7 @@ namespace moneysender
         private List<UIElement> _UIElementsSecondWindow = new List<UIElement>();
         private List<UIElement> _UIElementsThirdWindow = new List<UIElement>();
         private List<UIElement> _UIElementsLastWindow = new List<UIElement>();
-        public void AddRangeUISFirstWindow(UIElement[] elements)
+        public void AddRangeUIFirstWindow(UIElement[] elements)
         {
             _UIElementsFirstWindow.AddRange(elements);
         }
