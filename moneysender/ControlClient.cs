@@ -60,8 +60,7 @@ namespace moneysender
             string balance = _textBlockClient[1].Text;
             int first = Convert.ToInt32(balance);
             int second = Convert.ToInt32(count);
-            int inc = first - second;
-            _textBlockClient[1].Text = inc.ToString();
+            _textBlockClient[1].Text = (first - second).ToString();
         }
         public async void ReceiveClient()
         {

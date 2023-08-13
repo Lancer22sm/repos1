@@ -37,10 +37,14 @@ namespace moneysender
             _controlClient = new(OnReceiveClient);
             receivSmsServer += _controlServer.ReceiveServer;
             receivSmsClient += _controlClient.ReceiveClient;
-            _controlUI.AddRangeUIFirstWindow(new UIElement[] { CreateGame, JoinGame });
-            _controlUI.AddRangeUISecondWindow(new UIElement[] { LocalGame, WanGame });
-            _controlUI.AddRangeUIThirdWindow(new UIElement[] { JoinGameLast, textBlockIPFriend, ClientIP, ClientPort });
-            _controlUI.AddRangeUILastWindow(new UIElement[] { IPForConnect, ConnectIP, Balance, YourBalance, Rubles, CountSend, howMuchMoneySend });
+            UIElement[] elementsFirstWindow = new UIElement[] { CreateGame, JoinGame };
+            UIElement[] elementsSecondWindow = new UIElement[] { LocalGame, WanGame };
+            UIElement[] elementsThirdWindow = new UIElement[] { JoinGameLast, textBlockIPFriend, ClientIP, ClientPort };
+            UIElement[] elementsLastWindow = new UIElement[] { IPForConnect, ConnectIP, Balance, YourBalance, Rubles, CountSend, howMuchMoneySend };
+            _controlUI.AddRangeUIWindow(elementsFirstWindow,
+                                        elementsSecondWindow,
+                                        elementsThirdWindow,
+                                        elementsLastWindow);
             _controlServer.AddRangeTextBlock(new TextBlock[] { ConnectIP, Balance });
             _controlClient.AddRange(new TextBlock[] { ConnectIP, Balance });
         }
@@ -77,9 +81,7 @@ namespace moneysender
                 _controlUI.Show(4);
                 Balance.Text = "500";
                 ButtonSendClient.Visibility = Visibility.Visible;
-                string ipClient = ClientIP.Text;
-                int port = Convert.ToInt32(ClientPort.Text);
-                _controlClient.CreateClient(ipClient, port);
+                _controlClient.CreateClient(ClientIP.Text, Convert.ToInt32(ClientPort.Text));
             }
         }
         private void CountSend_TextChanged(object sender, TextChangedEventArgs e)
@@ -88,11 +90,8 @@ namespace moneysender
             bool succes = int.TryParse(CountSend.Text, out number);
             if (succes == false && CountSend.Text != "")
             {
-                string pattern = @"\D";
-                string target = "";
-                Regex regex = new Regex(pattern);
-                string result = regex.Replace(CountSend.Text, target);
-                CountSend.Text = result;
+                Regex regex = new Regex(@"\D");
+                CountSend.Text = regex.Replace(CountSend.Text, "");
             }
         }
         private void ClientPort_TextChanged(object sender, TextChangedEventArgs e)
@@ -101,11 +100,8 @@ namespace moneysender
             bool succes = int.TryParse(ClientPort.Text, out number);
             if (succes == false && ClientPort.Text != "")
             {
-                string pattern = @"\D";
-                string target = "";
-                Regex regex = new Regex(pattern);
-                string result = regex.Replace(ClientPort.Text, target);
-                ClientPort.Text = result;
+                Regex regex = new Regex(@"\D");
+                ClientPort.Text = regex.Replace(ClientPort.Text, "");
             }
         }
         private void ButtonSendServer_Click(object sender, RoutedEventArgs e)
@@ -130,11 +126,7 @@ namespace moneysender
         }
         private void ChangeBalanceInc(string sms)
         {
-            int first = Convert.ToInt32(sms);
-            string text = Balance.Text;
-            int second = Convert.ToInt32(text);
-            int inc = first + second;
-            Balance.Text = inc.ToString();
+            Balance.Text = (Convert.ToInt32(sms) + Convert.ToInt32(Balance.Text)).ToString();
         }
         private void receiverClient()
         {
