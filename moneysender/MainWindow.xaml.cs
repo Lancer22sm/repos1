@@ -131,11 +131,10 @@ namespace moneysender
         private void ChangeBalanceInc(string sms)
         {
             int first = Convert.ToInt32(sms);
-            string text = "";
-            Dispatcher.Invoke(() => text = Balance.Text);
+            string text = Balance.Text;
             int second = Convert.ToInt32(text);
             int inc = first + second;
-            Dispatcher.Invoke(() => Balance.Text = inc.ToString());
+            Balance.Text = inc.ToString();
         }
         private void receiverClient()
         {
