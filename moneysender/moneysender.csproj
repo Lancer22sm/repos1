@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="-RedActive.png" />
+    <None Remove="-RedInActive.png" />
+    <None Remove="XRedActive.png" />
+    <None Remove="XRedInActive.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Source\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="-RedActive.png" />
+    <Resource Include="-RedInActive.png" />
+    <Resource Include="XRedActive.png" />
+    <Resource Include="XRedInActive.png" />
+  </ItemGroup>
+
+</Project>
