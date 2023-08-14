@@ -62,8 +62,8 @@ namespace moneysender
             int balanceCop = getCop(balance);
             if (SendCop > balanceCop)
             {
-                SendCop = SendCop + 100;
-                SendRub = SendRub - 1;
+                balanceCop = balanceCop + 100;
+                balanceRub = balanceRub - 1;
             }
             int Rubles = balanceRub - SendRub;
             int Cop = balanceCop - SendCop;

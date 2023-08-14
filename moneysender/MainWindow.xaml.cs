@@ -91,6 +91,7 @@ namespace moneysender
             if (SendValue < balance && SendValue != 0)
             {
                 _controlServer.ServerSend(SendValue, balance);
+                MessageBox.Show($"buttonSend = {SendValue.ToString()}\nbuttonBalance = {balance.ToString()}");
             }
             else
             {
@@ -120,7 +121,6 @@ namespace moneysender
                 string changeValue2;
                 if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
                 SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
-                return SendValue;
             }
             return SendValue;
         }
