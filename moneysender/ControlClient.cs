@@ -13,7 +13,7 @@ namespace moneysender
     {
         private List<TextBlock> _textBlockClient = new List<TextBlock>();
         private Socket tcpClient;
-        public string sms;
+        public int sms;
         Action ClientReceive;
 
         public ControlClient(Action GiveSms)
@@ -44,11 +44,9 @@ namespace moneysender
                     string sendSms = ChangeBalanceDec(countSend, balance);
                     int sendValue = Convert.ToInt32(sendSms);
                     byte[] intBytes = BitConverter.GetBytes(sendValue);
-                    if (BitConverter.IsLittleEndian)
-                        Array.Reverse(intBytes);
-                    byte[] data = intBytes;
+                    //byte[] data = Encoding.UTF8.GetBytes(sendSms);
                     // отправляем данные
-                    tcpClient.Send(data);
+                    tcpClient.Send(intBytes);
                 }
             }
             catch (Exception ex)
@@ -68,10 +66,10 @@ namespace moneysender
                 SendCop = SendCop + 100;
                 SendRub = SendRub - 1;
             }
-            int Rubles = SendRub - balanceRub;
-            int Cop = SendCop - balanceCop;
+            int Rubles = balanceRub - SendRub;
+            int Cop = balanceCop - SendCop;
             _textBlockClient[1].Text = $"{Rubles}.{Cop}";
-            string send = $"{Rubles}{Cop}";
+            string send = $"{SendRub}{SendCop}";
             return send;
         }
         private int getRub(int money)
@@ -80,9 +78,9 @@ namespace moneysender
             MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
             int matchesNumberCount = matchesNumber.Count;
             string Rub = "";
-            for (int i = 0; i < matchesNumberCount - 3; i += 1)
+            for (int i = 0; i < matchesNumberCount - 2; i++)
             {
-                Rub += matchesNumber[i].Value;
+                Rub += matchesNumber[i].Value.ToString();
             }
             int FullRub = Convert.ToInt32(Rub);
             return FullRub;
@@ -92,7 +90,7 @@ namespace moneysender
             Regex regexsearchValues = new Regex(@"\d");
             MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
             int matchesNumberCount = matchesNumber.Count;
-            string SendCop = matchesNumber[matchesNumberCount].Value + matchesNumber[matchesNumberCount - 1].Value;
+            string SendCop = matchesNumber[matchesNumberCount - 2].Value.ToString() + matchesNumber[matchesNumberCount - 1].Value.ToString();
             int FullCop = Convert.ToInt32(SendCop);
             return FullCop;
         }
@@ -104,8 +102,8 @@ namespace moneysender
                 try
                 {
                     // принимаем данные
-                    int bytes = await tcpClient.ReceiveAsync(data);
-                    sms = Encoding.UTF8.GetString(data, 0, bytes);
+                    await tcpClient.ReceiveAsync(data);
+                    sms = BitConverter.ToInt32(data, 0);
                     ClientReceive();
                 }
                 catch (Exception ex)

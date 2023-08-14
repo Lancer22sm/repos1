@@ -66,7 +66,7 @@
                 </Style>
             </TextBox.Resources>
         </TextBox>
-        <TextBlock x:Name="Balance" Visibility="Hidden" HorizontalAlignment="Left" TextAlignment="Center" Height="35" Margin="785,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" FontSize="24" FontFamily="Segoe UI Semibold"/>
+        <TextBlock x:Name="Balance" Visibility="Hidden" HorizontalAlignment="Left" TextAlignment="Center" Height="35" Margin="785,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" FontSize="22" FontFamily="Segoe UI Semibold"/>
         <TextBlock x:Name="Rubles" Visibility="Hidden" HorizontalAlignment="Left" Text="Р" TextAlignment="Left" Height="35" Margin="855,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" FontSize="24" FontFamily="Segoe UI Semibold"/>
         <TextBlock x:Name="YourBalance" Visibility="Hidden" HorizontalAlignment="Left" Text="Ваш баланс" TextAlignment="Right" Height="35" Margin="635,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" FontSize="24" FontFamily="Segoe UI Semibold"/>
         <TextBlock x:Name="IPForConnect" Visibility="Hidden" HorizontalAlignment="Left" Text="IP для подключения" TextAlignment="Right" Height="35" Margin="50,449,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" FontSize="24" FontFamily="Segoe UI Semibold"/>

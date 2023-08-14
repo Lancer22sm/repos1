@@ -65,7 +65,7 @@ namespace moneysender
             {
                 _controlUI.Hide(3);
                 _controlUI.Show(4);
-                Balance.Text = "500.34";
+                Balance.Text = "500.11";
                 ButtonSendClient.Visibility = Visibility.Visible;
                 _controlClient.CreateClient(ClientIP.Text, Convert.ToInt32(ClientPort.Text));
             }
@@ -101,8 +101,8 @@ namespace moneysender
         {
             Regex regexsearchValues = new Regex(@"\d{1,4}\s*\d{1,2}");
             MatchCollection matches = regexsearchValues.Matches(Balance.Text);
-            string searchValueRub = matches[0].Value;
-            int searchValueCop = Convert.ToInt32(matches[1].Value);
+            string searchValueRub = matches[0].Value.ToString();
+            int searchValueCop = Convert.ToInt32(matches[1].Value.ToString());
             string changeValue2;
             if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
             int balanceValue = Convert.ToInt32(searchValueRub + changeValue2);
@@ -115,8 +115,8 @@ namespace moneysender
             MatchCollection matches = regexsearchValues.Matches(CountSend.Text);
             if (matches.Count == 2)
             {
-                string searchValueRub = matches[0].Value;
-                int searchValueCop = Convert.ToInt32(matches[1].Value);
+                string searchValueRub = matches[0].Value.ToString();
+                int searchValueCop = Convert.ToInt32(matches[1].Value.ToString());
                 string changeValue2;
                 if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
                 SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
@@ -139,10 +139,18 @@ namespace moneysender
         }
         private void receiverServer()
         {
-            string mySms = _controlServer.sms;
-            int money = Convert.ToInt32(mySms);
-            ChangeBalanceInc(money);
+            int mySms = _controlServer.sms;
+            //int money = Convert.ToInt32(mySms);
+            ChangeBalanceInc(mySms);
             receivSmsServer.Invoke();
+        }
+        private void receiverClient()
+        {
+            int mySms = _controlClient.sms;
+            MessageBox.Show(mySms.ToString());
+            //int money = Convert.ToInt32(mySms);
+            ChangeBalanceInc(mySms);
+            receivSmsClient.Invoke();
         }
         private void ChangeBalanceInc(int money)
         {
@@ -169,11 +177,11 @@ namespace moneysender
         {
             Regex regexsearchValues = new Regex(@"\d");
             MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
-            int matchesNumberCount = matchesNumber.Count;
+            int matchesNumberCount = matchesNumber.Count - 2;
             string Rub = "";
-            for (matchesNumberCount = 0; matchesNumberCount < matchesNumberCount - 2; matchesNumberCount += 1)
+            for (int i = 0; i < matchesNumberCount; i++)
             {
-                Rub += matchesNumber[matchesNumberCount].Value;
+                Rub += matchesNumber[i].Value.ToString();
             }
             int FullRub = Convert.ToInt32(Rub);
             return FullRub;
@@ -183,16 +191,9 @@ namespace moneysender
             Regex regexsearchValues = new Regex(@"\d");
             MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
             int matchesNumberCount = matchesNumber.Count;
-            string SendCop = matchesNumber[matchesNumberCount].Value + matchesNumber[matchesNumberCount - 1].Value;
+            string SendCop = matchesNumber[matchesNumberCount - 2].Value.ToString() + matchesNumber[matchesNumberCount - 1].Value.ToString();
             int FullCop = Convert.ToInt32(SendCop);
             return FullCop;
-        }
-        private void receiverClient()
-        {
-            string mySms = _controlClient.sms;
-            int money = Convert.ToInt32(mySms);
-            ChangeBalanceInc(money);
-            receivSmsClient.Invoke();
         }
         private void XButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
