@@ -140,15 +140,12 @@ namespace moneysender
         private void receiverServer()
         {
             int mySms = _controlServer.sms;
-            //int money = Convert.ToInt32(mySms);
             ChangeBalanceInc(mySms);
             receivSmsServer.Invoke();
         }
         private void receiverClient()
         {
             int mySms = _controlClient.sms;
-            MessageBox.Show(mySms.ToString());
-            //int money = Convert.ToInt32(mySms);
             ChangeBalanceInc(mySms);
             receivSmsClient.Invoke();
         }

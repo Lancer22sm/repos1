@@ -73,7 +73,6 @@ namespace moneysender
                     string sendSms = ChangeBalanceDec(countSend, balance);
                     int sendValue = Convert.ToInt32(sendSms);
                     byte[] intBytes = BitConverter.GetBytes(sendValue);
-                    //byte[] data = Encoding.UTF8.GetBytes(sendSms);
                     // отправляем данные
                     tcpServer.Send(intBytes);
                 }
