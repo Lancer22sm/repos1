@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 
 namespace moneysender
 {
@@ -62,14 +64,17 @@ namespace moneysender
             tcpServer = await tcpListener.AcceptAsync();
             ReceiveServer();
         }
-        public void ServerSend(string textBox)
+        public void ServerSend(int countSend, int balance)
         {
             try
             {
                 if (tcpServer != null)
                 {
-                    string sendSms = textBox;
-                    ChangeBalanceDec(sendSms);
+                    string sendSms = ChangeBalanceDec(countSend, balance);
+                    int sendValue = Convert.ToInt32(sendSms);
+                    byte[] intBytes = BitConverter.GetBytes(sendValue);
+                    if (BitConverter.IsLittleEndian)
+                        Array.Reverse(intBytes);
                     byte[] data = Encoding.UTF8.GetBytes(sendSms);
                     // отправляем данные
                     tcpServer.Send(data);
@@ -81,12 +86,45 @@ namespace moneysender
                 tcpServer.Close();
             }
         }
-        private void ChangeBalanceDec(string count)
+        private string ChangeBalanceDec(int countSend, int balance)
         {
-            string balance = _textBlockServer[1].Text;
-            int first = Convert.ToInt32(balance);
-            int second = Convert.ToInt32(count);
-            _textBlockServer[1].Text = (first - second).ToString();
+            int SendRub = getRub(countSend);
+            int SendCop = getCop(countSend);
+            int balanceRub = getRub(balance);
+            int balanceCop = getCop(balance);
+            if (SendCop > balanceCop)
+            {
+                SendCop = SendCop + 100;
+                SendRub = SendRub - 1;
+            }
+            int Rubles = SendRub - balanceRub;
+            int Cop = SendCop - balanceCop;
+            _textBlockServer[1].Text = $"{Rubles}.{Cop}";
+            string send = $"{Rubles}{Cop}";
+            return send;
+        }
+        private int getRub(int money)
+        {
+            Regex regexsearchValues = new Regex(@"\d");
+            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
+            int matchesNumberCount = matchesNumber.Count - 3;
+            string Rub = "";
+            for (int i = 0; i < matchesNumberCount; i++)
+            {
+                MessageBox.Show(matchesNumber[i].Value);
+                Rub += matchesNumber[i].Value;
+            }
+            int FullRub = Convert.ToInt32(Rub);
+            return FullRub;
+        }
+        private int getCop(int money)
+        {
+            Regex regexsearchValues = new Regex(@"\d");
+            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
+            int matchesNumberCount = matchesNumber.Count;
+            string SendCop = matchesNumber[matchesNumberCount].Value + matchesNumber[matchesNumberCount - 1].Value;
+            int FullCop = Convert.ToInt32(SendCop);
+            return FullCop;
         }
         public async void ReceiveServer()
         {

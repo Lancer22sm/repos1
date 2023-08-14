@@ -43,7 +43,7 @@ namespace moneysender
         {
             _controlUI.Hide(2);
             _controlUI.Show(4);
-            Balance.Text = "500";
+            Balance.Text = "500.54";
             ButtonSendServer.Visibility = Visibility.Visible;
             IPAddress localAddres = _controlServer.SayIpLocal();
             _controlServer.CreateServer(localAddres);
@@ -65,20 +65,14 @@ namespace moneysender
             {
                 _controlUI.Hide(3);
                 _controlUI.Show(4);
-                Balance.Text = "500";
+                Balance.Text = "500.34";
                 ButtonSendClient.Visibility = Visibility.Visible;
                 _controlClient.CreateClient(ClientIP.Text, Convert.ToInt32(ClientPort.Text));
             }
         }
         private void CountSend_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int number;
-            bool succes = int.TryParse(CountSend.Text, out number);
-            if (succes == false && CountSend.Text != "")
-            {
-                Regex regex = new Regex(@"\D");
-                CountSend.Text = regex.Replace(CountSend.Text, "");
-            }
+
         }
         private void ClientPort_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -92,32 +86,112 @@ namespace moneysender
         }
         private void ButtonSendServer_Click(object sender, RoutedEventArgs e)
         {
-            if (Convert.ToInt32(CountSend.Text) < Convert.ToInt32(Balance.Text))
+            int SendValue = searchSendValue();
+            int balance = getBalance();
+            if (SendValue < balance && SendValue != 0)
             {
-                _controlServer.ServerSend(CountSend.Text);
+                _controlServer.ServerSend(SendValue, balance);
             }
+            else
+            {
+                MessageBox.Show("Введите кол-во средств (12 руб. 34 коп.) для перевода");
+            }
+        }
+        private int getBalance()
+        {
+            Regex regexsearchValues = new Regex(@"\d{1,4}\s*\d{1,2}");
+            MatchCollection matches = regexsearchValues.Matches(Balance.Text);
+            string searchValueRub = matches[0].Value;
+            int searchValueCop = Convert.ToInt32(matches[1].Value);
+            string changeValue2;
+            if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
+            int balanceValue = Convert.ToInt32(searchValueRub + changeValue2);
+            return balanceValue;
+        }
+        private int searchSendValue()
+        {
+            int SendValue = 0;
+            Regex regexsearchValues = new Regex(@"\d{1,4}\s*\d{1,2}");
+            MatchCollection matches = regexsearchValues.Matches(CountSend.Text);
+            if (matches.Count == 2)
+            {
+                string searchValueRub = matches[0].Value;
+                int searchValueCop = Convert.ToInt32(matches[1].Value);
+                string changeValue2;
+                if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
+                SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
+                return SendValue;
+            }
+            return SendValue;
         }
         private void ButtonSendClient_Click(object sender, RoutedEventArgs e)
         {
-            if (Convert.ToInt32(CountSend.Text) < Convert.ToInt32(Balance.Text))
+            int SendValue = searchSendValue();
+            int balance = getBalance();
+            if (SendValue < balance && SendValue != 0)
             {
-                _controlClient.ClientSend(CountSend.Text);
+                _controlClient.ClientSend(SendValue, balance);
+            }
+            else
+            {
+                MessageBox.Show("Введите кол-во средств (12 руб. 34 коп.) для перевода");
             }
         }
         private void receiverServer()
         {
             string mySms = _controlServer.sms;
-            ChangeBalanceInc(mySms);
+            int money = Convert.ToInt32(mySms);
+            ChangeBalanceInc(money);
             receivSmsServer.Invoke();
         }
-        private void ChangeBalanceInc(string sms)
+        private void ChangeBalanceInc(int money)
         {
-            Balance.Text = (Convert.ToInt32(sms) + Convert.ToInt32(Balance.Text)).ToString();
+            int ReceivRub = getRub(money);
+            int ReceivCop = getCop(money);
+            int balance = getBalance();
+            int balanceRub = getRub(balance);
+            int balanceCop = getCop(balance);
+            int FullRub;
+            int FullCop;
+            if (ReceivCop + balanceCop > 99)
+            {
+                FullCop = ReceivCop + balanceCop - 100;
+                FullRub = ReceivRub + balanceRub + 1;
+            }
+            else
+            {
+                FullCop = ReceivCop + balanceCop;
+                FullRub = ReceivRub + balanceRub;
+            }
+            Balance.Text = $"{FullRub}.{FullCop}";
+        }
+        private int getRub(int money)
+        {
+            Regex regexsearchValues = new Regex(@"\d");
+            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
+            int matchesNumberCount = matchesNumber.Count;
+            string Rub = "";
+            for (matchesNumberCount = 0; matchesNumberCount < matchesNumberCount - 2; matchesNumberCount += 1)
+            {
+                Rub += matchesNumber[matchesNumberCount].Value;
+            }
+            int FullRub = Convert.ToInt32(Rub);
+            return FullRub;
+        }
+        private int getCop(int money)
+        {
+            Regex regexsearchValues = new Regex(@"\d");
+            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
+            int matchesNumberCount = matchesNumber.Count;
+            string SendCop = matchesNumber[matchesNumberCount].Value + matchesNumber[matchesNumberCount - 1].Value;
+            int FullCop = Convert.ToInt32(SendCop);
+            return FullCop;
         }
         private void receiverClient()
         {
             string mySms = _controlClient.sms;
-            ChangeBalanceInc(mySms);
+            int money = Convert.ToInt32(mySms);
+            ChangeBalanceInc(money);
             receivSmsClient.Invoke();
         }
         private void XButton_MouseDown(object sender, MouseButtonEventArgs e)
