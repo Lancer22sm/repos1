@@ -91,7 +91,6 @@ namespace moneysender
             if (SendValue < balance && SendValue != 0)
             {
                 _controlServer.ServerSend(SendValue, balance);
-                MessageBox.Show($"buttonSend = {SendValue.ToString()}\nbuttonBalance = {balance.ToString()}");
             }
             else
             {

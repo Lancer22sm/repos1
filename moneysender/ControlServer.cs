@@ -71,7 +71,6 @@ namespace moneysender
                 if (tcpServer != null)
                 {
                     string sendSms = ChangeBalanceDec(countSend, balance);
-                    MessageBox.Show($"ServerSendCount = {countSend.ToString()}\nServerSendBalance = {balance.ToString()}");
                     int sendValue = Convert.ToInt32(sendSms);
                     byte[] intBytes = BitConverter.GetBytes(sendValue);
                     // отправляем данные
