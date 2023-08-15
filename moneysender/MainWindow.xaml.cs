@@ -86,120 +86,41 @@ namespace moneysender
         }
         private void ButtonSendServer_Click(object sender, RoutedEventArgs e)
         {
-            int SendValue = searchSendValue();
-            int balance = getBalance();
+            int SendValue = ControlValue.searchSendValue(CountSend.Text);
+            int balance = ControlValue.getBalance(Balance.Text);
             if (SendValue < balance && SendValue != 0)
             {
                 _controlServer.ServerSend(SendValue, balance);
             }
             else
             {
-                MessageBox.Show("Введите кол-во средств например: (12 руб. 34 коп.) для перевода");
+                MessageBox.Show("Введите кол-во средств например: \"12 руб. 34 коп.\" для перевода");
             }
-        }
-        private int getBalance()
-        {
-            Regex regexsearchValues = new Regex(@"\d{1,4}\s*\d{1,2}");
-            MatchCollection matches = regexsearchValues.Matches(Balance.Text);
-            string searchValueRub = matches[0].Value.ToString();
-            int searchValueCop = Convert.ToInt32(matches[1].Value.ToString());
-            string changeValue2;
-            if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
-            int balanceValue = Convert.ToInt32(searchValueRub + changeValue2);
-            return balanceValue;
-        }
-        private int searchSendValue()
-        {
-            int SendValue = 0;
-            Regex regexsearchValues = new Regex(@"\d{1,4}\s*\d{1,2}");
-            MatchCollection matches = regexsearchValues.Matches(CountSend.Text);
-            if (matches.Count == 2)
-            {
-                string searchValueRub = matches[0].Value.ToString();
-                int searchValueCop = Convert.ToInt32(matches[1].Value.ToString());
-                string changeValue2;
-                if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
-                SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
-            }
-            else if (matches.Count == 1)
-            {
-                string searchValueRub = matches[0].Value.ToString();
-                string changeValue2 = "00";
-                SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
-            }
-            else
-            {
-                MessageBox.Show("Введите кол-во средств например: (12 руб. 34 коп.) для перевода");
-            }
-            return SendValue;
         }
         private void ButtonSendClient_Click(object sender, RoutedEventArgs e)
         {
-            int SendValue = searchSendValue();
-            int balance = getBalance();
+            int SendValue = ControlValue.searchSendValue(CountSend.Text);
+            int balance = ControlValue.getBalance(Balance.Text);
             if (SendValue < balance && SendValue != 0)
             {
                 _controlClient.ClientSend(SendValue, balance);
             }
             else
             {
-                MessageBox.Show("Введите кол-во средств например: (12 руб. 34 коп.) для перевода");
+                MessageBox.Show("Введите кол-во средств например: \"12 руб. 34 коп.\" для перевода");
             }
         }
         private void receiverServer()
         {
             int mySms = _controlServer.sms;
-            ChangeBalanceInc(mySms);
+            Balance.Text = ControlValue.ChangeBalanceInc(mySms, Balance.Text);
             receivSmsServer.Invoke();
         }
         private void receiverClient()
         {
             int mySms = _controlClient.sms;
-            ChangeBalanceInc(mySms);
+            Balance.Text = ControlValue.ChangeBalanceInc(mySms, Balance.Text);
             receivSmsClient.Invoke();
-        }
-        private void ChangeBalanceInc(int money)
-        {
-            int ReceivRub = getRub(money);
-            int ReceivCop = getCop(money);
-            int balance = getBalance();
-            int balanceRub = getRub(balance);
-            int balanceCop = getCop(balance);
-            int FullRub;
-            int FullCop;
-            if (ReceivCop + balanceCop > 99)
-            {
-                FullCop = ReceivCop + balanceCop - 100;
-                FullRub = ReceivRub + balanceRub + 1;
-            }
-            else
-            {
-                FullCop = ReceivCop + balanceCop;
-                FullRub = ReceivRub + balanceRub;
-            }
-            Balance.Text = $"{FullRub}.{FullCop}";
-        }
-        private int getRub(int money)
-        {
-            Regex regexsearchValues = new Regex(@"\d");
-            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
-            int matchesNumberCount = matchesNumber.Count - 2;
-            string Rub = "";
-            for (int i = 0; i < matchesNumberCount; i++)
-            {
-                Rub += matchesNumber[i].Value.ToString();
-            }
-            int FullRub = Convert.ToInt32(Rub);
-            return FullRub;
-        }
-        private int getCop(int money)
-        {
-            Regex regexsearchValues = new Regex(@"\d");
-            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
-            int matchesNumberCount = matchesNumber.Count;
-            string SendCop = matchesNumber[matchesNumberCount - 2].Value.ToString() + matchesNumber[matchesNumberCount - 1].Value.ToString();
-            int FullCop = Convert.ToInt32(SendCop);
-            return FullCop;
         }
         private void XButton_MouseDown(object sender, MouseButtonEventArgs e)
         {

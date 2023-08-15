@@ -41,7 +41,8 @@ namespace moneysender
             {
                 if (tcpClient != null)
                 {
-                    string sendSms = ChangeBalanceDec(countSend, balance);
+                    string sendSms = ControlValue.SayCountSend(countSend);
+                    _textBlockClient[1].Text = ControlValue.ChangeBalanceDec(countSend, balance);
                     int sendValue = Convert.ToInt32(sendSms);
                     byte[] intBytes = BitConverter.GetBytes(sendValue);
                     // отправляем данные
@@ -53,45 +54,6 @@ namespace moneysender
                 MessageBox.Show(ex.Message);
                 tcpClient.Close();
             }
-        }
-        private string ChangeBalanceDec(int countSend, int balance)
-        {
-            int SendRub = getRub(countSend);
-            int SendCop = getCop(countSend);
-            int balanceRub = getRub(balance);
-            int balanceCop = getCop(balance);
-            if (SendCop > balanceCop)
-            {
-                balanceCop = balanceCop + 100;
-                balanceRub = balanceRub - 1;
-            }
-            int Rubles = balanceRub - SendRub;
-            int Cop = balanceCop - SendCop;
-            _textBlockClient[1].Text = $"{Rubles}.{Cop}";
-            string send = $"{SendRub}{SendCop}";
-            return send;
-        }
-        private int getRub(int money)
-        {
-            Regex regexsearchValues = new Regex(@"\d");
-            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
-            int matchesNumberCount = matchesNumber.Count;
-            string Rub = "";
-            for (int i = 0; i < matchesNumberCount - 2; i++)
-            {
-                Rub += matchesNumber[i].Value.ToString();
-            }
-            int FullRub = Convert.ToInt32(Rub);
-            return FullRub;
-        }
-        private int getCop(int money)
-        {
-            Regex regexsearchValues = new Regex(@"\d");
-            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
-            int matchesNumberCount = matchesNumber.Count;
-            string SendCop = matchesNumber[matchesNumberCount - 2].Value.ToString() + matchesNumber[matchesNumberCount - 1].Value.ToString();
-            int FullCop = Convert.ToInt32(SendCop);
-            return FullCop;
         }
         public async void ReceiveClient()
         {
