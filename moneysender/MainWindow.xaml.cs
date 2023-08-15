@@ -94,7 +94,7 @@ namespace moneysender
             }
             else
             {
-                MessageBox.Show("Введите кол-во средств (12 руб. 34 коп.) для перевода");
+                MessageBox.Show("Введите кол-во средств например: (12 руб. 34 коп.) для перевода");
             }
         }
         private int getBalance()
@@ -121,6 +121,16 @@ namespace moneysender
                 if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
                 SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
             }
+            else if (matches.Count == 1)
+            {
+                string searchValueRub = matches[0].Value.ToString();
+                string changeValue2 = "00";
+                SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
+            }
+            else
+            {
+                MessageBox.Show("Введите кол-во средств например: (12 руб. 34 коп.) для перевода");
+            }
             return SendValue;
         }
         private void ButtonSendClient_Click(object sender, RoutedEventArgs e)
@@ -133,7 +143,7 @@ namespace moneysender
             }
             else
             {
-                MessageBox.Show("Введите кол-во средств (12 руб. 34 коп.) для перевода");
+                MessageBox.Show("Введите кол-во средств например: (12 руб. 34 коп.) для перевода");
             }
         }
         private void receiverServer()
