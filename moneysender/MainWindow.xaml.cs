@@ -92,6 +92,10 @@ namespace moneysender
             {
                 _controlServer.ServerSend(SendValue, balance);
             }
+            else if (SendValue < balance)
+            {
+                MessageBox.Show("На вашем счету недостаточно средств");
+            }
             else
             {
                 MessageBox.Show("Введите кол-во средств например: \"12 руб. 34 коп.\" для перевода");
@@ -104,6 +108,10 @@ namespace moneysender
             if (SendValue < balance && SendValue != 0)
             {
                 _controlClient.ClientSend(SendValue, balance);
+            }
+            else if (SendValue < balance)
+            {
+                MessageBox.Show("На вашем счету недостаточно средств");
             }
             else
             {

@@ -100,7 +100,7 @@ namespace moneysender
             if (SendCop < 10)
             {
                 string plusNull = $"0{SendCop}";
-                return $"{SendRub}.{plusNull}";
+                return $"{SendRub}{plusNull}";
             }
             return $"{SendRub}{SendCop}";
         }
