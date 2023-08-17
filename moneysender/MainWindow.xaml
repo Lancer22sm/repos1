@@ -53,7 +53,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <TextBox x:Name="CountSendRub" Visibility="Hidden" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" TextChanged="CountSendRub_TextChanged" BorderBrush="#FF711515" RenderTransformOrigin="0.5,0.5" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066" Margin="330,0,0,0">
+        <TextBox x:Name="CountSendRub" Padding="5,5,5,5" Visibility="Hidden" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" TextChanged="CountSendRub_TextChanged" BorderBrush="#FF711515" RenderTransformOrigin="0.5,0.5" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066" Margin="330,0,0,0" FontFamily="Segoe UI Semibold" FontSize="20">
             <TextBox.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFC1CA1B"/>
@@ -71,7 +71,7 @@
         <TextBlock x:Name="YourBalance" Visibility="Hidden" HorizontalAlignment="Left" Text="Ваш баланс" TextAlignment="Right" Height="35" Margin="635,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" FontSize="24" FontFamily="Segoe UI Semibold"/>
         <TextBlock x:Name="IPForConnect" Visibility="Hidden" HorizontalAlignment="Left" Text="IP для подключения" TextAlignment="Right" Height="35" Margin="50,449,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" FontSize="24" FontFamily="Segoe UI Semibold"/>
         <TextBlock x:Name="ConnectIP" Visibility="Hidden" HorizontalAlignment="Left" TextAlignment="Center" Height="35" Margin="315,449,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" FontSize="24" FontFamily="Segoe UI Semibold"/>
-        <TextBox x:Name="ClientIP" Visibility="Hidden" HorizontalAlignment="Left" Height="30" TextAlignment="Center" Margin="280,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" FontFamily="Segoe UI Semibold" FontSize="16" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066">
+        <TextBox x:Name="ClientIP" Padding="5,5,5,5" Visibility="Hidden" HorizontalAlignment="Left" Height="30" TextAlignment="Center" Margin="280,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" FontFamily="Segoe UI Semibold" FontSize="16" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066">
             <TextBox.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFC1CA1B"/>
@@ -98,7 +98,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <TextBox x:Name="ClientPort" Visibility="Hidden" HorizontalAlignment="Left" Height="30" TextAlignment="Center" Margin="550,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Segoe UI Semibold" FontSize="16" TextChanged="ClientPort_TextChanged" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066">
+        <TextBox x:Name="ClientPort" Padding="5,5,5,5" Visibility="Hidden" HorizontalAlignment="Left" Height="30" TextAlignment="Center" Margin="550,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Segoe UI Semibold" FontSize="16" TextChanged="ClientPort_TextChanged" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066">
             <TextBox.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFC1CA1B"/>
@@ -193,7 +193,7 @@
                 </LinearGradientBrush>
             </Polygon.Fill>
         </Polygon>
-        <TextBox x:Name="CountSendCop" Visibility="Hidden" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" TextChanged="CountSendCop_TextChanged" BorderBrush="#FF711515" RenderTransformOrigin="0.5,0.5" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066" Margin="490,0,0,0">
+        <TextBox x:Name="CountSendCop" Padding="5,5,5,5" Visibility="Hidden" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" TextChanged="CountSendCop_TextChanged" BorderBrush="#FF711515" RenderTransformOrigin="0.5,0.5" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066" Margin="490,0,0,0" FontFamily="Bahnschrift SemiBold" FontSize="20">
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5"/>
