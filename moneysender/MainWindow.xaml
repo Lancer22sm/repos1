@@ -53,7 +53,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <TextBox x:Name="CountSend" Visibility="Hidden" HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" VerticalAlignment="Center" Width="300" TextChanged="CountSend_TextChanged" BorderBrush="#FF711515" RenderTransformOrigin="0.5,0.5" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066">
+        <TextBox x:Name="CountSendRub" Visibility="Hidden" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" TextChanged="CountSendRub_TextChanged" BorderBrush="#FF711515" RenderTransformOrigin="0.5,0.5" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066" Margin="330,0,0,0">
             <TextBox.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFC1CA1B"/>
@@ -193,6 +193,21 @@
                 </LinearGradientBrush>
             </Polygon.Fill>
         </Polygon>
+        <TextBox x:Name="CountSendCop" Visibility="Hidden" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" TextChanged="CountSendCop_TextChanged" BorderBrush="#FF711515" RenderTransformOrigin="0.5,0.5" SelectionBrush="#FFFF9066" SelectionTextBrush="#FFFF9066" Margin="490,0,0,0">
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </TextBox.Resources>
+            <TextBox.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFC1CA1B"/>
+                    <GradientStop Color="#FFB93737" Offset="2"/>
+                </RadialGradientBrush>
+            </TextBox.Background>
+        </TextBox>
+        <TextBlock x:Name="Rub" Visibility="Hidden" HorizontalAlignment="Left" Height="30" Margin="420,258,0,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="50" FontFamily="Bahnschrift SemiBold" FontSize="20" Foreground="#FF6B0000"><Run Text="Руб"/><Run Language="ru-ru" Text="."/></TextBlock>
+        <TextBlock x:Name="Cop" Visibility="Hidden" HorizontalAlignment="Left" Height="30" Margin="580,258,0,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="50" FontFamily="Bahnschrift SemiBold" FontSize="20" Foreground="#FF6B0000"><Run Language="ru-ru" Text="Коп"/><Run Text="."/></TextBlock>
 
     </Grid>
 </Window>

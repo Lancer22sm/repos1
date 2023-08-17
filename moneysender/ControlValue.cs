@@ -13,116 +13,39 @@ namespace moneysender
 {
     public static class ControlValue
     {
-        public static int searchSendValue(string countSend)
+        public static int searchSendValue(string countSendRub, string countSendCop)
         {
-            int SendValue = 0;
-            Regex regexsearchValues = new Regex(@"\d{1,4}\s*\d{1,2}");
-            MatchCollection matches = regexsearchValues.Matches(countSend);
-            if (matches.Count == 2)
-            {
-                string searchValueRub = matches[0].Value.ToString();
-                int searchValueCop = Convert.ToInt32(matches[1].Value.ToString());
-                string changeValue2;
-                if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
-                SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
-            }
-            else if (matches.Count == 1)
-            {
-                string searchValueRub = matches[0].Value.ToString();
-                string changeValue2 = "00";
-                SendValue = Convert.ToInt32($"{searchValueRub}{changeValue2}");
-            }
+            int SendRub = Convert.ToInt32(countSendRub) * 100;
+            int SendValue = SendRub + Convert.ToInt32(countSendCop);
             return SendValue;
         }
         public static int getBalance(string balance)
         {
-            Regex regexsearchValues = new Regex(@"\d{1,4}\s*\d{1,2}");
-            MatchCollection matches = regexsearchValues.Matches(balance);
-            string searchValueRub = matches[0].Value.ToString();
-            int searchValueCop = Convert.ToInt32(matches[1].Value.ToString());
-            string changeValue2;
-            if (searchValueCop < 10) { changeValue2 = "0" + searchValueCop; } else { changeValue2 = searchValueCop.ToString(); }
-            int balanceValue = Convert.ToInt32(searchValueRub + changeValue2);
+            double DoubleBalance = Convert.ToDouble(balance);
+            int balanceValue = Convert.ToInt32(DoubleBalance * 100);
             return balanceValue;
         }
-        private static int getRub(int money)
+        public static string ChangeBalanceInc(int money, int balance)
         {
-            Regex regexsearchValues = new Regex(@"\d");
-            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
-            int matchesNumberCount = matchesNumber.Count - 2;
-            string Rub = "";
-            for (int i = 0; i < matchesNumberCount; i++)
-            {
-                Rub += matchesNumber[i].Value.ToString();
-            }
-            int FullRub = Convert.ToInt32(Rub);
-            return FullRub;
-        }
-        private static int getCop(int money)
-        {
-            Regex regexsearchValues = new Regex(@"\d");
-            MatchCollection matchesNumber = regexsearchValues.Matches(money.ToString());
-            int matchesNumberCount = matchesNumber.Count;
-            string SendCop = matchesNumber[matchesNumberCount - 2].Value.ToString() + matchesNumber[matchesNumberCount - 1].Value.ToString();
-            int FullCop = Convert.ToInt32(SendCop);
-            return FullCop;
-        }
-        public static string ChangeBalanceInc(int money, string StrBalance)
-        {
-            int ReceivRub = getRub(money);
-            int ReceivCop = getCop(money);
-            int balance = getBalance(StrBalance);
-            int balanceRub = getRub(balance);
-            int balanceCop = getCop(balance);
-            int FullRub;
-            int FullCop;
-            if (ReceivCop + balanceCop > 99)
-            {
-                FullCop = ReceivCop + balanceCop - 100;
-                FullRub = ReceivRub + balanceRub + 1;
-            }
-            else
-            {
-                FullCop = ReceivCop + balanceCop;
-                FullRub = ReceivRub + balanceRub;
-            }
-            if (FullCop < 10)
-            {
-                string plusNull = $"0{FullCop}";
-                return $"{FullRub}.{plusNull}";
-            }
-            return $"{FullRub}.{FullCop}";
-        }
-        public static string SayCountSend(int countSend)
-        {
-            int SendRub = getRub(countSend);
-            int SendCop = getCop(countSend);
-            if (SendCop < 10)
-            {
-                string plusNull = $"0{SendCop}";
-                return $"{SendRub}{plusNull}";
-            }
-            return $"{SendRub}{SendCop}";
+            double result = (Convert.ToDouble(money) + Convert.ToDouble(balance)) / 100;
+            return result.ToString();
         }
         public static string ChangeBalanceDec(int countSend, int balance)
         {
-            int SendRub = getRub(countSend);
-            int SendCop = getCop(countSend);
-            int balanceRub = getRub(balance);
-            int balanceCop = getCop(balance);
-            if (SendCop > balanceCop)
+            double result = (Convert.ToDouble(balance) - Convert.ToDouble(countSend)) / 100;
+            return result.ToString();
+        }
+        public static string CheckInt(string checkString)
+        {
+            int number;
+            bool succes = int.TryParse(checkString, out number);
+            if (succes == false && checkString != "")
             {
-                balanceCop = balanceCop + 100;
-                balanceRub = balanceRub - 1;
+                Regex regex = new Regex(@"\D");
+                checkString = regex.Replace(checkString, "");
+                return checkString ;
             }
-            int Rubles = balanceRub - SendRub;
-            int Cop = balanceCop - SendCop;
-            if (Cop < 10)
-            {
-                string plusNull = $"0{Cop}";
-                return $"{Rubles}.{plusNull}";
-            }
-            return $"{Rubles}.{Cop}";
+            return checkString;
         }
     }
 }

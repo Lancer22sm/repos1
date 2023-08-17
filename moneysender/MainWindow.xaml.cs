@@ -26,7 +26,7 @@ namespace moneysender
             UIElement[] elementsFirstWindow = new UIElement[] { CreateGame, JoinGame };
             UIElement[] elementsSecondWindow = new UIElement[] { LocalGame, WanGame };
             UIElement[] elementsThirdWindow = new UIElement[] { JoinGameLast, textBlockIPFriend, ClientIP, ClientPort };
-            UIElement[] elementsLastWindow = new UIElement[] { IPForConnect, ConnectIP, Balance, YourBalance, Rubles, CountSend, howMuchMoneySend };
+            UIElement[] elementsLastWindow = new UIElement[] { IPForConnect, ConnectIP, Balance, YourBalance, Rubles, CountSendRub, CountSendCop, Rub, Cop, howMuchMoneySend };
             _controlUI.AddRangeUIWindow(elementsFirstWindow,
                                         elementsSecondWindow,
                                         elementsThirdWindow,
@@ -43,7 +43,7 @@ namespace moneysender
         {
             _controlUI.Hide(2);
             _controlUI.Show(4);
-            Balance.Text = "500.54";
+            Balance.Text = "500,54";
             ButtonSendServer.Visibility = Visibility.Visible;
             IPAddress localAddres = _controlServer.SayIpLocal();
             _controlServer.CreateServer(localAddres);
@@ -65,28 +65,26 @@ namespace moneysender
             {
                 _controlUI.Hide(3);
                 _controlUI.Show(4);
-                Balance.Text = "500.11";
+                Balance.Text = "500,11";
                 ButtonSendClient.Visibility = Visibility.Visible;
                 _controlClient.CreateClient(ClientIP.Text, Convert.ToInt32(ClientPort.Text));
             }
         }
-        private void CountSend_TextChanged(object sender, TextChangedEventArgs e)
+        private void CountSendRub_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            CountSendRub.Text = ControlValue.CheckInt(CountSendRub.Text);
+        }
+        private void CountSendCop_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CountSendCop.Text = ControlValue.CheckInt(CountSendCop.Text);
         }
         private void ClientPort_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int number;
-            bool succes = int.TryParse(ClientPort.Text, out number);
-            if (succes == false && ClientPort.Text != "")
-            {
-                Regex regex = new Regex(@"\D");
-                ClientPort.Text = regex.Replace(ClientPort.Text, "");
-            }
+            ClientPort.Text = ControlValue.CheckInt(ClientPort.Text);
         }
         private void ButtonSendServer_Click(object sender, RoutedEventArgs e)
         {
-            int SendValue = ControlValue.searchSendValue(CountSend.Text);
+            int SendValue = ControlValue.searchSendValue(CountSendRub.Text, CountSendCop.Text);
             int balance = ControlValue.getBalance(Balance.Text);
             if (SendValue < balance && SendValue != 0)
             {
@@ -103,7 +101,7 @@ namespace moneysender
         }
         private void ButtonSendClient_Click(object sender, RoutedEventArgs e)
         {
-            int SendValue = ControlValue.searchSendValue(CountSend.Text);
+            int SendValue = ControlValue.searchSendValue(CountSendRub.Text, CountSendCop.Text);
             int balance = ControlValue.getBalance(Balance.Text);
             if (SendValue < balance && SendValue != 0)
             {
@@ -121,13 +119,15 @@ namespace moneysender
         private void receiverServer()
         {
             int mySms = _controlServer.sms;
-            Balance.Text = ControlValue.ChangeBalanceInc(mySms, Balance.Text);
+            int balance = ControlValue.getBalance(Balance.Text);
+            Balance.Text = ControlValue.ChangeBalanceInc(mySms, balance);
             receivSmsServer.Invoke();
         }
         private void receiverClient()
         {
             int mySms = _controlClient.sms;
-            Balance.Text = ControlValue.ChangeBalanceInc(mySms, Balance.Text);
+            int balance = ControlValue.getBalance(Balance.Text);
+            Balance.Text = ControlValue.ChangeBalanceInc(mySms, balance);
             receivSmsClient.Invoke();
         }
         private void XButton_MouseDown(object sender, MouseButtonEventArgs e)

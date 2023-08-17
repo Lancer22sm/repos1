@@ -41,10 +41,8 @@ namespace moneysender
             {
                 if (tcpClient != null)
                 {
-                    string sendSms = ControlValue.SayCountSend(countSend);
                     _textBlockClient[1].Text = ControlValue.ChangeBalanceDec(countSend, balance);
-                    int sendValue = Convert.ToInt32(sendSms);
-                    byte[] intBytes = BitConverter.GetBytes(sendValue);
+                    byte[] intBytes = BitConverter.GetBytes(countSend);
                     // отправляем данные
                     tcpClient.Send(intBytes);
                 }

@@ -70,10 +70,8 @@ namespace moneysender
             {
                 if (tcpServer != null)
                 {
-                    string sendSms = ControlValue.SayCountSend(countSend);
                     _textBlockServer[1].Text = ControlValue.ChangeBalanceDec(countSend, balance);
-                    int sendValue = Convert.ToInt32(sendSms);
-                    byte[] intBytes = BitConverter.GetBytes(sendValue);
+                    byte[] intBytes = BitConverter.GetBytes(countSend);
                     // отправляем данные
                     tcpServer.Send(intBytes);
                 }
